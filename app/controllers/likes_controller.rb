@@ -1,8 +1,5 @@
 class LikesController < ApplicationController
     before_action :authenticate_user!
-    # change all of these to work with the likes, then
-    # change the views to look more similar to the wireframe
-    # then finished
     def create
       idea = Idea.find(params[:idea_id])
       like = Like.new(user: current_user, idea: idea)
