@@ -1,0 +1,19 @@
+<% @ideas.each do |idea| %>
+    <div>
+        <h2><%= link_to idea.title, idea_path(idea) %></h2>
+        <p><%= idea.body %></p>
+        <p>By <%= idea.user&.full_name || 'DELETED'%></p>
+        <div>
+                <% if @like.present? && can?(:destroy, @like) %>
+                <%= link_to("Unlike", like_path(@like), method: :delete) %>
+                <% elsif can?(:like, @idea) %>
+                <%= link_to("Like", idea_likes_path(@idea), method: :post) %>
+                <% end %>
+            <p>
+
+                (<%= pluralize(idea.likes.count, "like") %>)
+            </small>
+            </div>
+        <hr>
+    </div>
+<% end %>

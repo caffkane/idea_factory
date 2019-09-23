@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>IdeaFactory</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag 'application', media: 'all' %>
+    <%= javascript_pack_tag 'application' %>
+  </head>
+
+  <body>
+    <header>
+      <nav class="container-fluid">
+        <div class="float-left">
+          <%= link_to 'Idea Factory', root_path, :class => "h1" %>
+        </div>
+          
+          <div class="float-right">
+          <% if user_signed_in? %>
+            Hello <%= current_user.full_name %>,
+            <%= link_to "Logout", sessions_path, method: :delete, data: {confirm: "Are you sure you want to log out"}%>
+            <% else %>
+            <%= link_to "Login", new_session_path %>
+            <%= link_to "Sign Up", new_user_path %>
+            <% end %>
+          </div>
+          
+      </nav>
+      <br>
+      <br>
+      <div class="container-fluid">
+        
+        <div class="float-right">
+          <%= link_to 'All Ideas', ideas_path, :class => "btn btn-primary"  %>
+          <%= link_to 'New Idea', new_idea_path, :class => "btn btn-primary" %>
+        </div>
+      </div>
+    </header>
+    <main class="container-fluid">
+
+    <%= yield %>
+  </main>
+  </body>
+</html>

@@ -1,0 +1,23 @@
+<% if @idea.errors.any? %>
+    <ul>
+        <% @idea.errors.full_messages.each do |msg|%>
+        <li><%=msg%></li>
+        <% end %>
+    </ul>
+
+<%end%>
+
+
+<%= form_for @idea do |f|%>
+
+<div class="form-group">
+<%= f.label :title %>
+<%= f.text_field :title %>
+</div>
+<div class="form-group">
+<%= f.label :body %>
+<%= f.text_field :body %>
+</div>
+<%= f.submit "Submit Idea", class: "btn btn-primary" %>
+
+<%end%>

@@ -1,0 +1,78 @@
+<h3>Show Page</h3>
+
+<h1><%= @idea.title %></h1>
+<p><%= @idea.body %></p>
+
+<p>Made by: <%= @idea.user&.full_name || 'DELETED'%></p>
+
+<% if can?(:crud, @idea) %>
+  <%= link_to "Edit", edit_idea_path(@idea) %>
+|
+  <%= link_to "Delete", idea_path(@idea), method: :delete, data: {confirm: "Are you sure?"} %>
+|
+<% end %>
+<% if @like.present? && can?(:destroy, @like) %>
+  <%= link_to(
+  "Unlike",
+  like_path(@like),
+  method: :delete
+  ) %>
+<% elsif can?(:like, @idea) %>
+  <%= link_to(
+        "Like",
+        idea_likes_path(@idea),
+        method: :post
+  ) %>
+<% end %>
+<small>
+  (<%= pluralize(@idea.likes.count, "like") %>)
+</small>
+
+<%= form_with(model: [@idea, @review], local: true) do |f| %>
+<% if @review.errors.any? %>
+  <ul>
+    <% @review.errors.full_messages.each do |msg|%>
+      <li><%= msg %></li>
+    <% end %>
+  </ul>
+<% end %>
+
+<div class="form-group">
+  <%= f.text_area(
+  :body,
+  cols: 50,
+  rows: 5,
+  placeholder: "What are your thoughts?",
+  class: "form-control"
+  ) %>
+</div>
+<%= f.submit "Submit Review", class: "btn btn-primary" %>
+<% end %>
+
+<hr />
+
+<ul class="review-list">
+  <% @reviews.each do |review| %>
+    <li>
+      <p>
+        <%= review.body %> <br />
+        <% if can? :crud, review %>
+          <small>
+            <%= link_to(
+              "Delete",
+              idea_review_path(@idea, review),
+              method: :delete,
+              data: {
+                confirm: "Are you sure?"
+              }
+            ) %>
+          </small>
+          |
+        <% end %>
+        <small>
+          Reviewed by <%= review.user&.full_name %> <%= time_ago_in_words(review.created_at) %> ago
+        </small>
+      </p>
+    </li>
+  <% end %>
+</ul>
